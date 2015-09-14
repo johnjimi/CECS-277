@@ -1,0 +1,247 @@
+/**
+ * Som, Johnjimy K.
+ * 008585403
+ * CECS 277, Spring 2015
+ * Instructor: Phuong Nguyen
+ * Lab 1: Rationals
+ */
+
+package rational;
+
+public class RationalDriver {
+
+   //we have to create 2 public members, rational number
+   public static Rational mRational1;
+   public static Rational mRational2;
+
+   /**
+    * This is the main method
+    * @param args
+    */
+   public static void main(String[] args) {
+      mRational1 = new Rational();
+      mRational2 = new Rational();
+
+      mRational1.inputRational();// user inputs
+      System.out.println("Add a first number: " + mRational1.toString());
+      //output^^
+      mRational2.inputRational();
+      System.out.println("Add a second number: " + mRational2.toString());
+
+      //recall the addition method
+      System.out.println("Addition solution: ");
+      System.out.print(mRational1.toString() + " + " + mRational2.toString() + " = ");
+      System.out.println(mRational1.addition(mRational2).toString());
+
+      //recall the subtraction method
+      System.out.println("Subtraction solution: ");
+      mRational1.subtraction(mRational1, mRational2);
+
+      //recall the multiplication method
+      System.out.println("Multiplication solution: ");
+      System.out.print(mRational1.toString() + " * " + mRational2.toString() + " = ");
+      System.out.println(mRational1.multiplication(mRational2).toString());
+
+      //recall the division method
+      System.out.println("Division solution: ");
+      mRational1.division(mRational1, mRational2);
+
+      //out the solution, 1/26/2015
+      System.out.println(Rational(mRational1, mRational2));
+
+      mRational1.setNumerator(2);
+      mRational2.setDenominator(5);
+
+      //output the numerator and denominator
+      System.out.println("Numerator: " + mRational1.getNumerator());
+      System.out.println("Denominator: " + mRational2.getDenominator());
+   }//end public static void main
+
+   /**
+    * The method to calulate the rational numbers
+    *
+    * @param F1 Rational number 1
+    * @param F2 Rational number 2
+    * @return we will return the solution of calculating f1 and f2
+    */
+   public static double Rational(Rational F1, Rational F2) {
+      double decimalAnswer;
+      decimalAnswer = (double) (F1.getNumerator() * F2.getDenominator()) / (double) (F1.getDenominator() * F2.getNumerator());
+      return decimalAnswer;
+   }//end static double main
+
+}//end public class rationalDriver
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package rational;
+import java.util.Scanner;
+
+public class Rational {
+
+   //we have 3 private member variablaes
+   private int mNumerator;
+   private int mDenominator;
+   private Scanner mInput;
+
+   //constructor
+   public Rational() {
+      mNumerator = 0;
+      mDenominator = 0;
+      mInput = new Scanner(System.in);
+   }//end public rational, constructor
+
+   //Basically this is where we have the accessors, and mutators
+   //getters and setters
+   
+   public int getNumerator() {
+      return mNumerator;
+   }//end int getNumerator
+
+   public void setNumerator(int numerator) {
+      this.mNumerator = numerator;
+   }//end setNumerator
+
+   public int getDenominator() {
+      return mDenominator;
+   }//end int getDenominatior
+
+   public void setDenominator(int denominator) {
+      this.mDenominator = denominator;
+   }//end setDenominator
+
+   public void inputRational() {
+      System.out.print("Please enter a number [numerator]: ");
+      setNumerator(mInput.nextInt());
+      System.out.print("Please enter a number [denominator]: ");
+      setDenominator(mInput.nextInt());
+   }//end input rational
+
+   public String toString() {
+      return getNumerator() + "/" + getDenominator();
+      //return getNumerator() + "¥n-¥n" + getDenominator();
+   }//end public String toString
+
+   private int gcd(int m, int n) {
+      int r;
+      while (n != 0) {
+         r = m % n;
+         m = n;
+         n = r;
+      }//end while loop
+      return m;
+   }//end private gcd method
+
+   /**
+    * @param F we pass the object F
+    * @return the new number (mNumber)
+    */
+   public Rational addition(Rational F) {
+      Rational mNumber = new Rational();
+      int mFNumerator = F.getNumerator();
+      int mFDenominator = F.getDenominator();
+      int mFinalNumerator = this.getNumerator() * mFDenominator + this.getDenominator() * mFNumerator;
+      int mFinalDenominator = this.getDenominator() * mFDenominator;
+      int mScalar = gcd(mFinalNumerator, mFDenominator);
+      mNumber.setNumerator(mFinalNumerator / mScalar);
+      mNumber.setDenominator(mFDenominator / mScalar);
+      return mNumber;
+   }
+
+   //one of the hardest method for me to make
+   /**
+    * We flip and divide the F2 Numerator and Denominator
+    *
+    * @param F1 for the numerator and denominator
+    * @param F2 for the numerator and denominator
+    * @Param mNumber new number
+    */
+   public void division(Rational F1, Rational F2) {
+      Rational mNumber = new Rational();
+      int mF1Numerator = F1.getNumerator();
+      int mF1Denominator = F1.getDenominator();
+      int mF2Numerator = F2.getDenominator();
+      int mF2Denominator = F2.getNumerator();
+      int mFinalNumerator = mF1Numerator * mF2Numerator;
+      int mFinalDenominator = mF1Denominator * mF2Denominator;
+      int mScalar = gcd(mFinalNumerator, mFinalDenominator);
+      if (mScalar < 0) {
+         mScalar = mScalar * -1;
+      }//end if statement scalar
+      mNumber.setNumerator(mFinalNumerator / mScalar);
+      mNumber.setDenominator(mFinalDenominator / mScalar);
+      System.out.println(F1.toString() + " / " + F2.toString() + " = " + mNumber.toString());
+   }//end public void division
+
+   /**
+    * This method calculates the product of rational numbers
+    *
+    * @param F rational number F for both numerator and denominator
+    * @return a new number (mNumber)
+    */
+   public Rational multiplication(Rational F) {
+      Rational mNumber = new Rational();
+      int mFNumerator = F.getNumerator();
+      int mFDenominator = F.getDenominator();
+      int mFinalNumerator = this.getNumerator() * mFNumerator;
+      int mFinalDenominator = this.getDenominator() * mFDenominator;
+      int mScalar = gcd(mFinalNumerator, mFinalDenominator);
+      mNumber.setNumerator(mFinalNumerator / mScalar);
+      mNumber.setDenominator(mFinalDenominator / mScalar);
+      return mNumber;
+   }//end public rational multiplcation
+
+   /**
+    * This method calculates the difference of the rational numbers
+    *
+    * @param F1 the numerator and the denominator
+    * @param F2 the numerator and the denominator
+    */
+   public void subtraction(Rational F1, Rational F2) {
+      Rational mNumber = new Rational();
+      int mF1Numerator = F1.getNumerator();
+      int mF1Denominator = F1.getDenominator();
+      int mF2Numerator = F2.getNumerator();
+      int mF2Denominator = F2.getDenominator();
+      int mFinalNumerator = mF1Numerator * mF2Denominator - mF1Denominator * mF2Numerator;
+      int mFinalDenominator = mF1Denominator * mF2Denominator;
+      int scalar = gcd(mFinalNumerator, mFinalDenominator);
+      if (scalar < 0) {
+         scalar = scalar * -1;
+      }//end if statement with scalar
+      mNumber.setNumerator(mFinalNumerator / scalar);
+      mNumber.setDenominator(mFinalDenominator / scalar);
+      System.out.println(F1.toString() + " - " + F2.toString() + " = " + mNumber.toString());
+   }//end public void subtraction
+}//end public class Rational
